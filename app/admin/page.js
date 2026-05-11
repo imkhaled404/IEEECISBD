@@ -5,13 +5,14 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
     // Fetch counts for dashboard
-    const [teamCount, eventCount, chapterCount, achievementCount, galleryCount, blogCount] = await Promise.all([
+    const [teamCount, eventCount, chapterCount, achievementCount, galleryCount, blogCount, sliderCount] = await Promise.all([
         prisma.committeeMember.count(),
         prisma.event.count(),
         prisma.chapter.count(),
         prisma.achievement.count(),
         prisma.galleryImage.count(),
         prisma.blogPost.count(),
+        prisma.heroSlider.count(),
     ]);
 
     const stats = [
@@ -21,6 +22,7 @@ export default async function AdminDashboard() {
         { name: 'Achievements', count: achievementCount, href: '/admin/achievements' },
         { name: 'Gallery Photos', count: galleryCount, href: '/admin/gallery' },
         { name: 'Blog Posts', count: blogCount, href: '/admin/blogs' },
+        { name: 'Hero Slider', count: sliderCount, href: '/admin/hero' },
     ];
 
     return (

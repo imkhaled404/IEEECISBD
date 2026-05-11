@@ -11,9 +11,10 @@ export default async function Home() {
   let team = [];
   let chapters = [];
   let gallery = [];
+  let heroSlides = [];
 
   try {
-    const [eventsData, teamData, chaptersData, galleryData] = await Promise.all([
+    const [eventsData, teamData, chaptersData, galleryData, sliderData] = await Promise.all([
       prisma.event.findMany({
         take: 3,
         orderBy: { date: "desc" },
@@ -29,6 +30,9 @@ export default async function Home() {
         take: 4,
         orderBy: { createdAt: "desc" },
       }),
+      prisma.heroSlider.findMany({
+        orderBy: { order: "asc" },
+      }),
     ]);
 
     events = eventsData;
@@ -38,6 +42,7 @@ export default async function Home() {
       tag: ch.name.split(' ').map(w => w[0]).join('').toUpperCase() // Fallback tag generator
     }));
     gallery = galleryData;
+    heroSlides = sliderData;
   } catch (e) {
     console.error("Prisma Fetch Error:", e);
   }
@@ -45,7 +50,7 @@ export default async function Home() {
   return (
     <div style={{ background: "#fff" }}>
       {/* 1. HERO */}
-      <Hero />
+      <Hero dbSlides={heroSlides} />
 
       {/* 2. WHO WE ARE */}
       <section className="section" style={{ background: "#fff", borderBottom: "1px solid #f1f5f9" }}>

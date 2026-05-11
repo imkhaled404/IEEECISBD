@@ -34,19 +34,29 @@ const panelImages = [
   { src: "/IEEE BDC 04.png", label: "Student Outreach" },
 ];
 
-export default function Hero() {
+export default function Hero({ dbSlides = [] }) {
   const [current, setCurrent] = useState(0);
   const [mounted, setMounted] = useState(false);
+
+  // Use DB slides if available, otherwise fallback to defaults
+  const displaySlides = dbSlides.length > 0 ? dbSlides.map(s => ({
+    tag: s.subtitle || "Welcome to IEEE CS Bangladesh Chapter",
+    headline: s.title,
+    sub: s.subtitle || "",
+    cta1: { label: "Learn More", href: s.link || "/about" },
+    cta2: { label: "Join Us", href: "/membership" },
+    imageUrl: s.imageUrl
+  })) : slides;
 
   useEffect(() => {
     setMounted(true);
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (prev + 1) % displaySlides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [displaySlides.length]);
 
-  const slide = slides[current];
+  const slide = displaySlides[current];
 
   if (!mounted) return <div style={{ minHeight: "80vh", background: "#f8fafc" }} />;
 
@@ -126,7 +136,7 @@ export default function Hero() {
 
             {/* Pagination Dots */}
             <div style={{ display: "flex", gap: "0.75rem", marginTop: "3rem" }}>
-              {slides.map((_, i) => (
+              {displaySlides.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
@@ -159,7 +169,7 @@ export default function Hero() {
               }}
             >
               <img
-                src={panelImages[current % panelImages.length].src}
+                src={slide.imageUrl || panelImages[current % panelImages.length].src}
                 alt="IEEE CIS Highlights"
                 style={{
                   width: "100%",
