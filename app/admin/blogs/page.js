@@ -1,6 +1,8 @@
 import { prisma } from '../../../lib/prisma';
 import BlogsClient from './BlogsClient';
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogsPage() {
     const posts = await prisma.blogPost.findMany({
         orderBy: {

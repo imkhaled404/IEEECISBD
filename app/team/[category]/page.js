@@ -1,6 +1,8 @@
 import { prisma } from "../../../lib/prisma";
 import MemberCard from "../../../components/MemberCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function TeamPage({ params }) {
     const { category } = params;
 

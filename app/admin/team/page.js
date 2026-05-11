@@ -1,6 +1,8 @@
 import { prisma } from '../../../lib/prisma';
 import CommitteeClient from './CommitteeClient';
 
+export const dynamic = "force-dynamic";
+
 export default async function CommitteePage() {
     const members = await prisma.committeeMember.findMany({
         orderBy: {

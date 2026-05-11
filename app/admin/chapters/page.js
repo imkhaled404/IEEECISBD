@@ -1,6 +1,8 @@
 import { prisma } from '../../../lib/prisma';
 import ChaptersClient from './ChaptersClient';
 
+export const dynamic = "force-dynamic";
+
 export default async function ChaptersPage() {
     const chapters = await prisma.chapter.findMany({
         orderBy: {

@@ -2,6 +2,8 @@ import { prisma } from "../../lib/prisma";
 import Link from "next/link";
 import "../pages.css";
 
+export const dynamic = "force-dynamic";
+
 export default async function Gallery() {
     let images = [];
     try {
